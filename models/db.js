@@ -1,18 +1,31 @@
 const { Sequelize } = require('sequelize');
-const dotenv = require('dotenv');
 
-dotenv.config()
-
-const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER,   process.env.DB_PASS, {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
+const sequelize = new Sequelize('med_control', 'root', '123456', {
+    host: 'localhost',
     dialect: 'mysql',
     timezone: '-03:00',
     dialectOptions: {
         dateStrings: true,
         typeCast: true
+require('dotenv').config();
+
+const sequelize = new Sequelize(
+    
+    process.env.MYSQLDATABASE || process.env.DB_NAME,
+    process.env.MYSQLUSER || process.env.DB_USER,
+    process.env.MYSQLPASSWORD || process.env.DB_PASS,
+    {
+        host: process.env.MYSQLHOST || process.env.DB_HOST,
+        port: process.env.MYSQLPORT || 3306,
+        dialect: 'mysql',
+        timezone: '-03:00', 
+        dialectOptions: {
+            dateStrings: true,
+            typeCast: true
+        }
     }
 });
+);
 
 sequelize.authenticate()
     .then(() => {
@@ -25,4 +38,3 @@ sequelize.authenticate()
 module.exports = {
     Sequelize: Sequelize,
     sequelize: sequelize
-}
